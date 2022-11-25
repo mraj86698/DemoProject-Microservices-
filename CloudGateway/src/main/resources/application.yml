@@ -7,7 +7,7 @@ spring:
         - id: order-service
           uri: lb://Order-Service
           predicates:
-            - Path=/orderservice/**
+            - Path=/order/**
           filters:
             - name: CircuitBreaker
               args:
@@ -16,12 +16,19 @@ spring:
         - id: payment-service
           uri: lb://Payment-Service
           predicates:
-            - Path=/paymentservice/**
+            - Path=/payment/**
           filters:
             - name: CircuitBreaker
               args:
                 name: payment-service
                 fallbackuri: forward:/paymentFallback
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
 
 
 server:
@@ -39,4 +46,4 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 100
+            timeoutInMilliseconds: 5000
